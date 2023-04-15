@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+        <style type="text/css">
+        .abc{}
+    </style>
+    <script src="/static/jquery-3.6.4.js"></script>
+<script type="text/javascript">
+    $(function () {
+        // 当多选框选中时触发事件
+        $("#myCheckbox").on("change", function() {
+            if (this.checked) {
+                // 多选框被选中时执行的代码
+                $(".abc").prop("checked", true);
+            } else {
+                // 多选框被取消选中时执行的代码
+                $(".abc").prop("checked",false)
+            }
+        });
+
+    })
+
+</script>
+</head>
+<body>
+
+<h2>已选择的用户或群聊</h2>
+<label>
+    全选
+    <input name="selectAll" id="myCheckbox" type="checkbox" checked="checked" >
+</label>
+
+
+<form action="{% url 'demos:delete' %}" method="post">
+    {% csrf_token %}
+    {% if user_list %}
+        {% for user in user_list %}
+            {% if user.isSelected is True %}
+
+                <label>
+                {{ user.name }}
+                    <input type="checkbox" class="abc" name="userList" value="{{ user }}" checked="checked">
+                </label><br/>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>没有群和好友</p>
+    {% endif %}
+<input type="submit" name="sub" value="删除"/>
+</form>
+
+
+
+</body>
+</html>
